@@ -1,0 +1,294 @@
+\documentclass[12pt, letterpaper]{report}
+\usepackage{amsmath}
+% \usepackage{bm}
+\title{Algorithm Theory}
+\author{Jiayi Wu}
+\begin{document}
+    \maketitle
+    \tableofcontents
+
+    \chapter{Graph Matrix}
+    Let G(V, E) be a graph, where $|V| = n$ and $|E| = m$. Assume G is unweighted and undirected, with no self loops or multiple edges.
+    \section{Laplacian}
+    \subsection{Adjacency Matrix}
+    For graph G, let the adjacency matrix $A = A_{G}$ be defined as
+    \begin{gather*}
+        A_{G} = 
+        \begin{cases}
+            1 & (i, j) \in E\\
+            0 & (i, j) \notin E
+        \end{cases}
+    \end{gather*}
+
+
+    \subsection{Laplacian}
+    The Laplacian of the graph, $L = L_{G}$ is defined as
+    \begin{gather*}
+        L_{G} = 
+        \begin{cases}
+            -1 & (i, j) \in E\\
+            d_{i} & i = j\\
+            0 & otherwise
+        \end{cases}
+        \\
+        L_{G} = D_{G} - A_{G}
+    \end{gather*}
+    Let some vector \textbf{v} be thought of as a function that maps to the index to some value. ie.
+    \begin{gather*}
+        v_{i} = X(i)
+    \end{gather*}
+    $L_{G}\mathbf{v}$ can then be though as:
+    \begin{gather*}
+        [L_{G}\mathbf{v}]_i = d_i [X(i) - (\overline{X(j)}\mid (i, j) \in E)]
+    \end{gather*}
+    Let $\lambda_1 \leq \lambda_2 \leq \dots \leq \lambda_{n}$ be the eigenvalues of $L_G$ with corresponding eigenvectors $\mathbf{v_1}, \dots \mathbf{v_n}$. Then
+    \begin{itemize}
+        \item $\mathbf{v_{1}} = \mathbf{1}$, $\lambda_{1} = 0$
+        \item All $\lambda_{i} \geq 0$
+        \item Much information can be obtained by the first few non-trival \mbox{eigenvectors}.
+    \end{itemize}
+
+
+    \subsection{Properties of the Laplacian}
+    \subsubsection{Edge Union} If G and H share the same vertex set have \textbf{disjoint} edge sets,
+    \begin{gather*}
+        L_{G \cup H} = L_G + L_H
+    \end{gather*}
+    \subsubsection{Isolated Vertex} If $d_i = 0$, then $[L_G]_{i,j} = 0$ and $[L_G]_{j,i} = 0$\\
+    \subsubsection{Disjoint Union} If G and H have disjoint vertex sets, then
+    \begin{gather*}
+        L_{G \sqcup H} = L_G \oplus L_H = 
+        \begin{pmatrix}
+            L_G & 0\\
+            0 & L_H
+        \end{pmatrix}
+    \end{gather*}
+    If $L_G$ had eigenvectors $\mathbf{v_i}$ with eigenvalues $\lambda_i$ and $L_H$ had eigenvectors $\mathbf{u_i}$ with eigenvalues $\mu_i$, then $L_{G \sqcup H}$ has eigenvectors
+    \begin{gather*}
+        \mathbf{v_i}\oplus \mathbf{0}, \mathbf{0}\oplus \mathbf{u_i}
+    \end{gather*}
+    with the eigenvalues $\lambda_i$ and $\mu_i$ each.
+    \subsubsection{Laplacian of Edge}
+    The Laplacian of an edge $L_e$ has the form $\begin{pmatrix}
+        1 & -1\\
+        -1 & 1
+    \end{pmatrix} = \begin{pmatrix}
+        1\\-1
+    \end{pmatrix}\begin{pmatrix}
+        -1 & 1
+    \end{pmatrix}$
+    . The graph can be written as $\sum L_e$. Hence for vector \textbf{x} = $\begin{pmatrix}
+        x_{1} \\
+        x_{2}
+    \end{pmatrix}$, $\mathbf{x^T} L_e \mathbf{x} = (x_1 - x_2)^2 \geq 0$. Hence the Laplacian is \textbf{positive semidefinite}. 
+    This implies that all eigenvalues $\lambda_i \geq 0$ and that the matrix can be diagonalized as $L_e = Q^T \Lambda Q$.
+    In addition, $L_e = A^T A$.
+
+    \subsubsection{Factoring the Laplacian}
+    The \textbf{Incidence Matrix} $\nabla_G = \nabla_{e, v} = \begin{cases}
+        1 & e = (v, w), v < w\\
+        -1 & e=(v,w), v>w\\
+        0 & otherwise
+    \end{cases}$\\
+    Then $L_G = \nabla^T \nabla$.
+    \subsubsection{Dimension of Nullspace}
+    If G is connected, then the nullspace is $span\{\mathbf{1}\}$.\\
+    \indent Thus, for connected graphs, $\lambda_2 \geq 0$\\
+    \indent The dimensions of the nullspace is equal to the number of connected components of G.\\
+    \subsubsection{Spectra of Common Graphs}
+    \textbf{Complete Graph} has eigenvalue 0 with multiplicity 1 and eigenvalue n with multiplicity (n - 1)\\
+    \textbf{Ring Graph} with n vertices has eigenvectors
+    \begin{gather*}
+        x_k (u) = \sin{\frac{2 \pi k u}{n}}\\
+        y_k (u) = \cos{\frac{2 \pi k u}{n}}
+    \end{gather*}
+    where the eigenvalue $x_k$ and $y_k$ is $2-2\cos{\frac{2 \pi k}{n}}$\\
+    \textbf{Path Graph} with n vertices has the eigenvectors \begin{gather*}
+        v_k (u) = \sin (\frac{\pi k u}{n} + \frac{\pi}{2n})
+    \end{gather*}
+    That has the same Eigenvalues as $R_{2n}$
+
+    \subsubsection{Graph Products}
+    \textbf{Definition} Let G=(V,E) and H=(W,F). The Graph $G \times H$ has vertex set $V \times W$ and edge
+    set 
+    \begin{gather*}
+        ((v_1, w), (v_2, w)), \forall (v_1, v_2) \in E, \and w \in W\\
+        ((v, w_1), (v, w_2)), \forall v \in V, \and (w_1, w_2) \in F
+    \end{gather*}
+    \indent The product of 2 paths graph is the grid graph.\\
+    \textbf{Eigenvales} If $L_G$ has the eigenvalues $\lambda_i$ with the eigenvectors 
+    $v_i$ and $L_H$ has the eigenvalues $\mu_i$ with the eigenvectors $w_i$, then the 
+    eigenvectors of $L_{G \times H}$ are listed
+    \begin{gather*}
+        z_{ij}(v, w) = x_i(v) y_j(w)
+    \end{gather*}
+    with eigenvalues $\lambda_i + \mu_u$.
+
+    \subsection{Why it is Called the Laplacian}
+    If one is to discrete the derivative on graphs, as in treat the vertex as a function, then the 
+    "Laplacian" would be $-L_G$
+
+    \subsubsection{Laplacian Eigenvalues}
+    \textbf{Sum of Eigenvalues} Given an n-vertex graph, where $d_{max} = \max{d_i}$, 
+    \begin{gather*}
+        \sum{\lambda_i}=\sum{d_i} \leq d_{max} n
+    \end{gather*}
+    This is obtained from the trace.
+    \begin{gather*}
+        \lambda_2 \leq \frac{\sum{d_i}}{n-1}\\
+        \lambda_n \geq \frac{\sum{d_i}}{n-1}
+    \end{gather*}
+    
+    \subsubsection{Bounds of $\lambda_2$ and $\lambda_{max}$}
+    \textbf{Courant-Fischer Formula} For any $n\times n$ symmetric matrix A,
+    \begin{gather*}
+        \lambda_{1} = \min_{||x||=1} \mathbf{x^T}A\mathbf{x} = \min_{||x||\neq 0}\frac{\mathbf{x^T}A\mathbf{x}}{\mathbf{x^Tx}}\\
+        \lambda_{max} = \max_{||x||=1}{\mathbf{x^T}A\mathbf{x}} = \max_{x\neq \vec{0}}\frac{\mathbf{x^T}A\mathbf{x}}{\mathbf{x^Tx}}
+    \end{gather*}
+    Let $S_k$ denote the span of $v_1 \cdots v_k$, and let $S_k^\perp$ denote the orthogonal complement of $S_k$
+    \begin{gather*}
+        \lambda_k = \min_{|x|=1,x\in S_k^\perp}x^TAx=\min_{x\neq 0,x\in S_k^\perp}\frac{x^TAx}{x^Tx}
+    \end{gather*}
+    \\
+    \textbf{Rayleigh Quotient}
+    Let G=(V,E) be a graph with Laplacian $L_{G}$, then
+    \begin{alignat*}{2}
+        &\lambda_1 = 0 & \mathbf{v_1} = \mathbf{1}\\
+        &\lambda_2 = \min_{x\perp v_1,x\neq 0}\frac{x^T L_G x}{x^Tx} &=\min_{\sum x=0,x\neq 0} \frac{\sum_{(i,j)\in E}(x_i-x_j)^2}{\sum_{i \in V}x_i^2}\\
+        &\lambda_{max} = \max_{x\neq 0}\frac{x^T L_G x}{x^Tx} &=\max_{x\neq 0} \frac{\sum_{(i,j)\in E}(x_i-x_j)^2}{\sum_{i \in V}x_i^2}
+    \end{alignat*}
+    One can use this to bound the eigenvalues of graphs eaasily.
+    \section{Cut Graphs}
+    \subsection{Cut Ratio}
+    Let $e(S)$ of a cut $S-\overline{S}$ denote the number of edges between $S$ and $\overline{S}$\\
+    \textbf{Cut Ratio} $\phi$ of a cut $S-\overline{S}$ is $\phi = \frac{e(S)}{\min(|S, |\overline{S}|)}$\\
+    The \textbf{cut of minimum ratio} is the cut that minimizes $\phi(S)$.\\The \textbf{isoperimetric number} of a graph is the value of minimum cut.
+    \subsubsection{Integer Function of the Cut Ratio}
+    Associate every cut $S-\overline{S}$ with a vector $x\in \{-1, 1\}^n$, such that
+    \begin{gather*}
+        x_i = \begin{cases}
+            1 & i \in S\\
+            -1 & i \in \overline{S}
+        \end{cases}
+    \end{gather*}
+    Thus,
+    \begin{gather*}
+        e(S) = \frac{1}{4} \sum_{(i,j)\in E}(x_i-x_j)^2
+    \end{gather*}
+    \begin{gather*}
+        |S||\overline{S}| = \sum_{i,j \in V}[i \in S, j \in \overline{S}] = \frac{1}{4}\sum_{i<j}(x_i-x_j)^2\\
+        \frac{n}{2}\min(|S|,|\overline{S}|)\leq |S||\overline{S}| \leq n \min{(|S|, |\overline{S}|)}
+    \end{gather*}
+    Hence:
+    \begin{gather*}
+        \frac{1}{n}\phi(G) \leq \min_{x\in \{1,-1\}^n}\frac{\sum_{(i,j)\in E}(x_i-x_j)^2}{\sum_{i<j}(x_i-x_j)^2} \leq \frac{2}{n}\phi(G)
+    \end{gather*}
+    This allows approximation of $\phi(G)$ to a factor of 2, but NP-hard. Can change the range of x to be $[-1, 1]^n$\\
+    \indent To find the min of function $f(x)$ on C, relax the constraints $x\in C'\supseteq C$, let $f(p)$ and $f(q)$ be the min with 
+    constraints C and C'. $f(p)\geq f(q)$. Round q to $q'\in C$ such that $f(q') \leq \gamma f(q)$. Thus $f(q')\leq\gamma f(q)\leq\gamma f(p)$\\\\
+    Relax $x\in\{-1, 1\}$ to $x\in R^n, \sum{x_i}=0$
+    \begin{gather*}
+        \sum_{i<j}(x_i-x_j)^2=n\sum{x_i^2}
+    \end{gather*}
+    \begin{gather*}
+        \min_{x\in R^n}\frac{\sum_{(i,j)\in E}(x_i-x_j)^2}{\sum_{i<j}(x_i-x_j)^2} = \min_{x\in R^n, x\perp 1}\frac{\sum_{(i,j)\in E}(x_i-x_j)^2}{n\sum x_i^2}=\frac{\lambda_2}{n}
+    \end{gather*}
+    By definition of Courant-Fischer formula of the second eigenvalue. So,
+    \begin{gather*}
+        \phi(G) \geq \frac{\lambda_2}{2}
+    \end{gather*}
+    \subsection{Cheeger's Inequality}
+    Upper bound on the minimum cut. These bounds are tight.
+    \begin{gather*}
+        \frac{\phi(G)^2}{2d_{max}}\leq \lambda_2 \leq 2\phi(G)
+    \end{gather*}
+    \subsubsection{Proof}
+    For any $x\perp \mathbf{1}, x_1\leq x_2 \cdots x_n$, $\exists i$
+    \begin{gather*}
+        \frac{x^T Lx}{x^Tx} \geq \frac{\phi(\{1\cdots i\})}{2d_{max}}
+    \end{gather*}
+    Let
+    \begin{gather*}
+        m = \frac{n+1}{2}\\
+        y_i=x_i-x_m
+    \end{gather*}
+    Then
+    \begin{gather*}
+        \frac{x^TLx}{x^Tx} \geq \frac{y^TLy}{y^Ty}
+    \end{gather*}
+    Next, if $(i,j)\in E, i<m<j$, then replace (i, j) with (i, m) and (m, j) in E'.
+    \begin{gather*}
+        \frac{\sum_{(i,j)\in E}(y_i-y_j)^2}{\sum_{i\in V}y_i^2} \geq \frac{\sum_{(i,j)\in E'}(y_i-y_j)^2}{\sum_{i\in V}y_i^2}
+    \end{gather*}
+    Split the latter on m,
+    \begin{gather*}
+        \frac{\sum_{(i,j)\in E_{-}'}(y_i-y_j)^2+\sum_{(i,j)\in E_{+}'}(y_i-y_j)^2}{\sum_{i\in [1,m]}y_i^2+\sum_{i\in [m,n]}y_i^2}
+    \end{gather*}
+    which has lower bound
+    \begin{gather*}
+        \frac{\sum_{(i,j)\in E_{-}'}(y_i-y_j)^2}{\sum_{i\in [1,m]}y_i^2}
+    \end{gather*}
+    \textbf{Lemma} for $z_1\leq z_2 \cdots \leq z_n = 0$, 
+    \begin{gather*}
+        \sum_{(i,j)\in E'_{-}}|z_i-z_j|\geq \phi \sum_{i=1}^{m}|z_i|
+    \end{gather*}
+    \textbf{Put it together}
+    \begin{enumerate}
+        \item Normalize: $\sum_{i=1}^m y_i^2 =1$
+        \item Let $z_i=-y_i^2$, apply lemma to gather\begin{gather*}
+            \sum_{(i,j)\in E_{-}'}|y_i^2-y_j^2|\geq \phi \sum_{i=1}^{m}|y_i|^2=\phi
+        \end{gather*}
+        \item Cauchy-Schwartz:\begin{gather*}
+            \sum_{(i,j)\in E_{-}'}|y_i^2-y_j^2|\leq \Bigl( \sum_{(i,j)\in E_{-}'}(y_i-y_j)^2 \Bigr) ^{1/2}\Bigl(\sum_{(i,j)\in E_{-}'} (y_i+y_j)^2\Bigr)^{1/2}
+        \end{gather*}
+        \item \begin{gather*}
+            \sum_{(i,j)\in E_{-}'}(y_i+y_j)^2 \leq 2\sum_{(i,j)\in E_{-}'}(y_i^2+y_j^2)\leq 2\sum_{i=1}^{m}d_{max}y_i^2\leq 2d_{max}
+        \end{gather*}
+        \item \begin{gather*}
+            \frac{\sum_{(i,j)\in E_{-}'}(y_i-y_j)^2}{\sum_{i=0}^m y_i^2}\geq\frac{\bigl(\sum_{(i,j)\in E_{-}'}|y_i^2-y_j^2|\bigr)^2}{\sum_{(i,j)\in E_{-}'}(y_i+y_j)^2}\geq\frac{\phi^2}{2d_{max}}
+        \end{gather*}
+        \item \begin{gather*}
+            \frac{x^TLx}{x^Tx}\geq\frac{y^TLy}{y^Ty}\geq\frac{\phi^2}{2d_{max}}
+        \end{gather*}
+    \end{enumerate}
+    
+
+    \newpage
+    \chapter{Combinatorics}
+    \section{Expanders and Eigenvalues}
+    \subsection{Expander Graphs}
+    The \textbf{edge expansion} or \textbf{Cheeger Constant} is
+    \begin{gather}
+        h(G) = \min_{|S|\leq n/2} \frac{e(S,\overline{S})}{|S|}
+    \end{gather}
+    A graph is \textbf{(d, $\epsilon$)-expander} if it is d-regular and $h(G)\geq \epsilon$
+    \subsection{Random Graphs}
+    A bipartite graph with $n+n$ vertices $L \cup R$ is a \textbf{(d, $\beta$)-expander} if the degrees in L are d and any set of vertex 
+    $S \subset L$ of size $|S|\leq n/d$ has at least $\beta |S|$ neighbors in R.\\
+    Let $d\geq 4$ and G be a bipartite graph obtained by randomly choosing d edges for each vertex in L, then G is a (d, d/4)-expander with constant positive probability.\\
+    \begin{gather*}
+        Pr[\exists S, T;|S|\leq n/d, T\leq \beta |S|] < \sum_{s=1}^{n/d}{n \choose s}{n \choose \beta s}(\frac{\beta s}{n})^{ds}
+    \end{gather*}
+    \subsection{Eigenvalue Bounds on Expansion}
+    \begin{gather*}
+        h(G) \geq \frac{1}{2}(d-\lambda_2)
+    \end{gather*}
+    \textbf{Proof} For any subset of the vertices S let $\mathbf{x}=(n-s)\mathbf{1}_S-s\mathbf{1}_{\overline{S}}$. Then $\mathbf{x^Tx}=(n-s)^2s+s^2(n-s)=s(n-s)n$.
+    \begin{flalign*}
+        \mathbf{x^T}A\mathbf{x} & =2\sum_{(i,j)\in E}x_ix_j=2(n-s)^2e(S)-2s(n-s)e(S,\overline{S})+2s^2e(\overline{S})\\
+        & =(n-s)^2(ds-e(S,\overline{S}))-2s(n-s)e(S,\overline{S})+s^2(d(n-s)-e(S,\overline{S}))\\
+        & =dns(n-s)-n^2e(S,\overline{S})
+    \end{flalign*}
+    \begin{gather*}
+        \lambda_2\geq\frac{x^TAx}{x^Tx}=\frac{dns(n-s)-n^2e(S,\overline{S})}{s(n-s)n}=d-\frac{ne(S,\overline{S})}{s(n-s)}
+    \end{gather*}
+    For $s\leq \frac{n}{2}$,
+    \begin{gather*}
+        \frac{e(S,\overline{S})}{|S|}\geq\frac{n-s}{n}(d-\lambda_2)\geq\frac{1}{2}(d-\lambda_2)
+    \end{gather*}
+    $(d-\lambda_2)$ is called the \textbf{spectral gap}
+    \begin{gather*}
+        h(G)\leq\sqrt{d(d-\lambda_2)}
+    \end{gather*}
+    
+\end{document}

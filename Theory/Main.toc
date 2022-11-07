@@ -1,0 +1,26 @@
+\contentsline {chapter}{\numberline {1}Graph Matrix}{2}{}%
+\contentsline {section}{\numberline {1.1}Laplacian}{2}{}%
+\contentsline {subsection}{\numberline {1.1.1}Adjacency Matrix}{2}{}%
+\contentsline {subsection}{\numberline {1.1.2}Laplacian}{2}{}%
+\contentsline {subsection}{\numberline {1.1.3}Properties of the Laplacian}{3}{}%
+\contentsline {subsubsection}{Edge Union}{3}{}%
+\contentsline {subsubsection}{Isolated Vertex}{3}{}%
+\contentsline {subsubsection}{Disjoint Union}{3}{}%
+\contentsline {subsubsection}{Laplacian of Edge}{4}{}%
+\contentsline {subsubsection}{Factoring the Laplacian}{4}{}%
+\contentsline {subsubsection}{Dimension of Nullspace}{4}{}%
+\contentsline {subsubsection}{Spectra of Common Graphs}{4}{}%
+\contentsline {subsubsection}{Graph Products}{5}{}%
+\contentsline {subsection}{\numberline {1.1.4}Why it is Called the Laplacian}{5}{}%
+\contentsline {subsubsection}{Laplacian Eigenvalues}{5}{}%
+\contentsline {subsubsection}{Bounds of $\lambda _2$ and $\lambda _{max}$}{6}{}%
+\contentsline {section}{\numberline {1.2}Cut Graphs}{6}{}%
+\contentsline {subsection}{\numberline {1.2.1}Cut Ratio}{6}{}%
+\contentsline {subsubsection}{Integer Function of the Cut Ratio}{6}{}%
+\contentsline {subsection}{\numberline {1.2.2}Cheeger's Inequality}{7}{}%
+\contentsline {subsubsection}{Proof}{8}{}%
+\contentsline {chapter}{\numberline {2}Combinatorics}{10}{}%
+\contentsline {section}{\numberline {2.1}Expanders and Eigenvalues}{10}{}%
+\contentsline {subsection}{\numberline {2.1.1}Expander Graphs}{10}{}%
+\contentsline {subsection}{\numberline {2.1.2}Random Graphs}{10}{}%
+\contentsline {subsection}{\numberline {2.1.3}Eigenvalue Bounds on Expansion}{11}{}%
