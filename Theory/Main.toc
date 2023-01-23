@@ -16,11 +16,19 @@
 \contentsline {subsubsection}{Bounds of $\lambda _2$ and $\lambda _{max}$}{6}{}%
 \contentsline {section}{\numberline {1.2}Cut Graphs}{6}{}%
 \contentsline {subsection}{\numberline {1.2.1}Cut Ratio}{6}{}%
-\contentsline {subsubsection}{Integer Function of the Cut Ratio}{6}{}%
-\contentsline {subsection}{\numberline {1.2.2}Cheeger's Inequality}{7}{}%
+\contentsline {subsubsection}{Integer Function of the Cut Ratio}{7}{}%
+\contentsline {subsection}{\numberline {1.2.2}Cheeger's Inequality}{8}{}%
 \contentsline {subsubsection}{Proof}{8}{}%
-\contentsline {chapter}{\numberline {2}Combinatorics}{10}{}%
-\contentsline {section}{\numberline {2.1}Expanders and Eigenvalues}{10}{}%
-\contentsline {subsection}{\numberline {2.1.1}Expander Graphs}{10}{}%
-\contentsline {subsection}{\numberline {2.1.2}Random Graphs}{10}{}%
-\contentsline {subsection}{\numberline {2.1.3}Eigenvalue Bounds on Expansion}{11}{}%
+\contentsline {subsection}{\numberline {1.2.3}Random Walks}{9}{}%
+\contentsline {subsubsection}{Definitions}{9}{}%
+\contentsline {subsubsection}{Stationary Distribution}{10}{}%
+\contentsline {subsubsection}{Lazry Random Walks}{10}{}%
+\contentsline {subsubsection}{Connection to Laplacians}{11}{}%
+\contentsline {subsubsection}{$\ell _2$ Convergence}{12}{}%
+\contentsline {subsubsection}{Conductance}{12}{}%
+\contentsline {subsubsection}{Monte Carlo Methods}{12}{}%
+\contentsline {chapter}{\numberline {2}Combinatorics}{14}{}%
+\contentsline {section}{\numberline {2.1}Expanders and Eigenvalues}{14}{}%
+\contentsline {subsection}{\numberline {2.1.1}Expander Graphs}{14}{}%
+\contentsline {subsection}{\numberline {2.1.2}Random Graphs}{14}{}%
+\contentsline {subsection}{\numberline {2.1.3}Eigenvalue Bounds on Expansion}{15}{}%

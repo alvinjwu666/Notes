@@ -81,8 +81,12 @@
         x_{1} \\
         x_{2}
     \end{pmatrix}$, $\mathbf{x^T} L_e \mathbf{x} = (x_1 - x_2)^2 \geq 0$. Hence the Laplacian is \textbf{positive semidefinite}. 
-    This implies that all eigenvalues $\lambda_i \geq 0$ and that the matrix can be diagonalized as $L_e = Q^T \Lambda Q$.
-    In addition, $L_e = A^T A$.
+    This implies that all eigenvalues $\lambda_i \geq 0$ and that the matrix can be diagonalized as $L_e = Q^T \Lambda Q$.\\
+    \begin{gather*}
+        \mathbf{x^T} L \mathbf{x}=\sum_{(i,j)\in E}(x_i-x_j)^2
+    \end{gather*}
+    In addition, because L is positive semidefinite, all eigenvalues of L are non-negative, $L_e = A^T A$ (for some A).\\
+    A need not be square or unique.
 
     \subsubsection{Factoring the Laplacian}
     The \textbf{Incidence Matrix} $\nabla_G = \nabla_{e, v} = \begin{cases}
@@ -96,7 +100,8 @@
     \indent Thus, for connected graphs, $\lambda_2 \geq 0$\\
     \indent The dimensions of the nullspace is equal to the number of connected components of G.\\
     \subsubsection{Spectra of Common Graphs}
-    \textbf{Complete Graph} has eigenvalue 0 with multiplicity 1 and eigenvalue n with multiplicity (n - 1)\\
+    \textbf{Complete Graph} has eigenvalue 0 with multiplicity 1 and eigenvalue n with multiplicity $(n - 1)$\\
+    eigenvectors of \textbf{1} and $\{\mathbf{x} \mid \mathbf{x} \cdot \mathbf{1} = 0\}$\\
     \textbf{Ring Graph} with n vertices has eigenvectors
     \begin{gather*}
         x_k (u) = \sin{\frac{2 \pi k u}{n}}\\
@@ -133,7 +138,7 @@
     \begin{gather*}
         \sum{\lambda_i}=\sum{d_i} \leq d_{max} n
     \end{gather*}
-    This is obtained from the trace.
+    This is obtained from the trace. If one removes $\lambda_1=0$, then
     \begin{gather*}
         \lambda_2 \leq \frac{\sum{d_i}}{n-1}\\
         \lambda_n \geq \frac{\sum{d_i}}{n-1}
@@ -157,7 +162,7 @@
         &\lambda_2 = \min_{x\perp v_1,x\neq 0}\frac{x^T L_G x}{x^Tx} &=\min_{\sum x=0,x\neq 0} \frac{\sum_{(i,j)\in E}(x_i-x_j)^2}{\sum_{i \in V}x_i^2}\\
         &\lambda_{max} = \max_{x\neq 0}\frac{x^T L_G x}{x^Tx} &=\max_{x\neq 0} \frac{\sum_{(i,j)\in E}(x_i-x_j)^2}{\sum_{i \in V}x_i^2}
     \end{alignat*}
-    One can use this to bound the eigenvalues of graphs eaasily.
+    One can use this to bound the eigenvalues of graphs easily.
     \section{Cut Graphs}
     \subsection{Cut Ratio}
     Let $e(S)$ of a cut $S-\overline{S}$ denote the number of edges between $S$ and $\overline{S}$\\
@@ -183,9 +188,11 @@
     \begin{gather*}
         \frac{1}{n}\phi(G) \leq \min_{x\in \{1,-1\}^n}\frac{\sum_{(i,j)\in E}(x_i-x_j)^2}{\sum_{i<j}(x_i-x_j)^2} \leq \frac{2}{n}\phi(G)
     \end{gather*}
-    This allows approximation of $\phi(G)$ to a factor of 2, but NP-hard. Can change the range of x to be $[-1, 1]^n$\\
-    \indent To find the min of function $f(x)$ on C, relax the constraints $x\in C'\supseteq C$, let $f(p)$ and $f(q)$ be the min with 
+    This allows approximation of $\phi(G)$ to a factor of 2, but NP-hard. Can change the range of x to be $[-1, 1]^n$, this is solvable.\\
+    \textbf{Relaxation}\\
+    \indent To find the min of function $f(x)$ on C (NP hard), relax the constraints $x\in C'\supseteq C$, let $f(p)$ and $f(q)$ be the min with 
     constraints C and C'. $f(p)\geq f(q)$. Round q to $q'\in C$ such that $f(q') \leq \gamma f(q)$. Thus $f(q')\leq\gamma f(q)\leq\gamma f(p)$\\\\
+    \textbf{Bounding Min Cut}
     Relax $x\in\{-1, 1\}$ to $x\in R^n, \sum{x_i}=0$
     \begin{gather*}
         \sum_{i<j}(x_i-x_j)^2=n\sum{x_i^2}
@@ -251,7 +258,126 @@
             \frac{x^TLx}{x^Tx}\geq\frac{y^TLy}{y^Ty}\geq\frac{\phi^2}{2d_{max}}
         \end{gather*}
     \end{enumerate}
-    
+    \subsection{Random Walks}
+    \subsubsection{Definitions}
+    Consider starting at some vertex $v \in V(G)$ and repeatedly moving to a neighboring vertex uniformly at random\\
+    Let $p_t(u)$ denote the probability of being at a vertex at time t.
+    \begin{gather*}
+        \sum_{u \in V} p_t(u) = 1\\
+        p_t(u) = \sum_{(u,v)\in E} p_{t-1}(v) \cdot \frac{1}{d(v)}
+    \end{gather*}
+    Define a matrix $W_G$ as follows:
+    \begin{gather*}
+        [W]_{i,j} = 
+        \begin{cases}
+            \frac{1}{d(j)} & (i,j) \in E\\
+            0 & otherwise
+        \end{cases}\\
+        W = A \cdot D^{-1}
+    \end{gather*}
+    Where A is the adjacency matrix and D is diagonal matrix with degrees.\\
+    \subsubsection{Stationary Distribution}
+    Let $\pi$ be defined as a probability vector \textit{stationary distribution} of the random walk:
+    \begin{gather*}
+        \pi (u) = \frac{d(u)}{\sum_{v \in V} d(v)}
+    \end{gather*}
+    \textit{$\pi$ is a probability distribution}\\
+    \begin{gather*}
+        W \cdot \pi = \pi
+    \end{gather*}
+    Hence is at one point the random walk follows distribution $\pi$, it shall follow $\pi$ for all future steps. Or $\pi$ is 
+    W's eigenvector with eigenvalue 1. Note that the probability need not converge to $\pi$ or at all.\\
+    \subsubsection{Lazry Random Walks}
+    \textit{Lazy Random Walks}
+    \begin{itemize}
+        \item With probability 1/2 stay at the current node
+        \item With probability 1/2 take a step of the original walk
+    \end{itemize}
+    This breaks the periodicity of the walk in the following way
+    \begin{gather*}
+        W' = (W+I) /2=(I+A\cdot I)/2
+    \end{gather*}
+    However, since W and W' are not symmetric, it is difficult to analyze. \textit{Normalized Random Walk Matrix}
+    \begin{align*}
+        N &= D ^{-1/2} \cdot W \cdot D ^{1/2} &=&D ^{-1/2} \cdot A \cdot D^{-1/2}\\
+        N' & = D ^{-1/2} \cdot W' \cdot D^{1/2}&=&(I+D^{-1/2}\cdot A \cdot D^{-1/2})/2
+    \end{align*}
+    N and W share eigenvalues and their eigenvectors are related.\\
+    \indent If $v$ is eigenvector of N, then $q = D^{1/2}v$ is eigenvector of W\\
+    \indent therefore because W has eigenvector $D \cdot \mathbf{1}$ with eigenvalue 1, N has eigenvector $D^{1/2}\cdot \mathbf{1}$
+    with eigenvalue 1
+    \subsubsection{Connection to Laplacians}
+    The normalized laplacian $\mathcal{L}$ is defined as
+    \begin{gather*}
+        \mathcal{L}=D^{-1/2}\cdot L \cdot D^{-1/2}
+    \end{gather*}
+    and
+    \begin{gather*}
+        N=I-\mathcal{L}
+    \end{gather*}
+    Eigenvalues of N are given by $\mu=1-\lambda$ of the eigenvalues of $\mathcal{L}$, reorder them such that\\
+    \begin{gather*}
+        1=\mu_{1}\geq\mu_{2}\cdots\geq\mu_{n}
+    \end{gather*}
+    \textbf{Theorems}\\
+    \begin{itemize}
+        \item for all i, $\mu_{i}\in[-1, 1]$
+        \item if G is connected, $\lambda_{2}<1$
+        \item the eigenvalue of -1 only occurs for bipartite Graphs
+    \end{itemize}
+    For eigenvalues of N', $\mu_i'$
+    \begin{itemize}
+        \item for all i, $\mu_{i}'\in[0,1]$
+        \item if G is connected, then $\mu_2'<1$
+    \end{itemize}
+    \subsubsection{$\ell_2$ Convergence}
+    The spectral gap is defined as $\lambda=1-\mu_2$\\
+    \textbf{$\ell_2$ Distance} for probability distribution p, q is defined to be $||p-q||_{2}=\sqrt{\sum_{i}(p(i)-q(i))^{2}}$
+    , basically the Euclidean Distance.
+    \textbf{Theorem} Let $p_0$ denote some initial probability distribution, and $p_t$ the distribution after t steps
+    of lazy random walks. Then
+    \begin{gather*}
+        ||p_t-\pi||_{2}\leq(1-\lambda_2)^{2}\sqrt{\frac{max_{x} d(x)}{min_y d(y)}}
+    \end{gather*}
+    This is easily shown for regular graphs.
+    \subsubsection{Conductance}
+    Conductance controls how well-knit a graph is: how fast a random walk converges to the stationary distribution.
+    Or how fast one can move from one part of a graph to another
+    \textbf{Definition} For $S \subset V$, let
+    \begin{gather*}
+        \Phi(S) = \frac{e(S)}{min(\sum_{v \in S}d(v), \sum_{v\in \overline{S}}d(v)}
+    \end{gather*}
+    The conductance 
+    \begin{gather*}
+        \Phi(G) = \min_{S\subset V}\Phi(S)\\
+        \Theta(1)\cdot\Phi^{2}(G) \leq 1-\mu_2'\leq\Theta(1)\cdot\Phi(G)
+    \end{gather*}
+    The above is analogous to Cheeger's Inequality.
+    \subsubsection{Monte Carlo Methods}
+    For ranomd variable $r\in{0,1}$ such that $\mathbf{Pr}[r=1]=p$ and $\mathbf{Pr}[r=0]=1-p$
+    Assuming draw n independent $r_1,r_2\dots r_n$. Let $R =\sum_{i}r_i$. By linearity of expectations, $E[R]=n\cdot p$\\
+    We  say R \textit{$\epsilon$-Approximates} $\mathbf{E}[R]$ if
+    \begin{gather*}
+        (1-\epsilon)\mathbf{E}[R]\leq R\leq (1+\epsilon)\mathbf{E}[R]
+    \end{gather*}
+    This error measure is multiplicative.\\
+    \textbf{Chernoff Bound} The Probability that R fails to $\epsilon$ approximate \textbf{E}[R] is
+    \begin{gather*}
+        \mathbf{Pr}[|R-\mathbf{E}[R]| \geq \epsilon\mathbf{E}[R]] \leq 2e^{-np\epsilon ^{2}/12}=2e^{-\mathbf{E}[R]\epsilon^{2}/12}
+    \end{gather*}
+    \begin{itemize}
+        \item The bound is nearly tight
+        \item The trials need to be independent for the bound to hold
+        \item The guarentee is multiplicative but not additive
+        \item For fiexed $\epsilon$, it falls off exponentially in n. So one can improve from 1/2 to $1/2^k$ by doing
+        k trials
+        \item Therefore, smaller n requires more trials
+        \item If a $\epsilon$-approximation is required with probability $1-\delta$,
+        \begin{gather*}
+            N\geq \Theta(\frac{log(1/\delta)}{p\epsilon^{2}})
+        \end{gather*}
+    \end{itemize}
+
 
     \newpage
     \chapter{Combinatorics}
@@ -290,5 +416,6 @@
     \begin{gather*}
         h(G)\leq\sqrt{d(d-\lambda_2)}
     \end{gather*}
+
     
 \end{document}
